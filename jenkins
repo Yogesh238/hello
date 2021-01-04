@@ -1,0 +1,38 @@
+pipeline {
+     agent any
+     environment {
+         PATH= "/opt/apache-maven-3.6.3/bin/:$PATH"
+         }
+     stages {
+        stage("Git checkout"){
+           steps{
+              git branch: 'main', credentialsId: 'e040b9b8-7f8f-411d-8f25-028880c62e53', url: 'https://github.com/Yogesh238/project2.git'
+              }
+    }
+     stage("Compile"){
+           steps{
+              sh "mvn compile"
+              }
+              }
+     stage("Package"){
+           steps{
+              sh "mvn package"
+              }
+              }
+     stage("Install"){
+           steps{
+              sh "mvn install"
+              }  
+              }
+     stage("Create War File"){
+           steps{
+              sh 'jar -cf helloworld.jar helloworld.war'
+              } 
+              }
+     stage("Deploy War File"){
+           steps{
+              sh "cp target/*.war /etc/apache-tomcat-8.5.61/webapps/"
+              }   
+          }
+      }
+ }     
