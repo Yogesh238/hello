@@ -4,9 +4,14 @@ pipeline {
          PATH= "/opt/apache-maven-3.6.3/bin/:$PATH"
          }
      stages {
-        stage("Git Checkout"){
+        stage("Git clone"){
            steps{
               git branch: 'main', credentialsId: 'e040b9b8-7f8f-411d-8f25-028880c62e53', url: 'https://github.com/Yogesh238/jenk.git'
+              }
+     }
+        stage("Git Checkout"){
+           steps{
+              url= "https://github.com/Yogesh238/jenk/blob/main/procfile"
               }
               }
      stage("Compile"){
