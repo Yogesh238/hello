@@ -1,9 +1,9 @@
 pipeline {
-     agent any
+     agent mymaven
      stages {
         stage("build"){
            steps{
-              echo "hello"
+              sh "mvn cleaninstall"
               }
           }
       }
