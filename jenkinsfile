@@ -26,7 +26,7 @@ pipeline {
               }
      stage("Create War File"){
            steps{
-              sh 'java -jar target/dependency/webapp-runner.jar --port target/*.war'
+              sh 'java -jar target/dependency/webapp-runner.jar -war target/*.war'
               } 
               }
      stage("Deploy War File"){
