@@ -6,7 +6,7 @@ pipeline {
      stages {
         stage("Git Checkout"){
            steps{
-              url: 'https://github.com/Yogesh238/jenk.git'
+              git branch: 'main', credentialsId: 'e040b9b8-7f8f-411d-8f25-028880c62e53', url: 'https://github.com/Yogesh238/jenk.git'
               }
               }
      stage("Compile"){
