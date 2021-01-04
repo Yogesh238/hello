@@ -26,7 +26,7 @@ pipeline {
               }
      stage("Create War File"){
            steps{
-              sh 'java -jar target/dependency/webapp-runner.jar target/*.war'
+              sh 'java $JAVA_OPTS -jar target/dependency/webapp-runner.jar --port $PORT target/*.war'
               } 
               }
      stage("Deploy War File"){
