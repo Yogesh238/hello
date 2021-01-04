@@ -11,7 +11,7 @@ pipeline {
      }
         stage("Git Checkout"){
            steps{
-              url= "https://github.com/Yogesh238/jenk/blob/main/procfile"
+               cat procfile
               }
               }
      stage("Compile"){
