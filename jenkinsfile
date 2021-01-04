@@ -8,22 +8,27 @@ pipeline {
            steps{
               url: 'https://github.com/Yogesh238/jenk.git'
               }
+              }
      stage("Compile"){
            steps{
               sh "mvn compile"
+              }
               }
      stage("Package"){
            steps{
               sh "mvn package"
               }
+              }
      stage("Install"){
            steps{
               sh "mvn install"
               }  
+              }
      stage("Create War File"){
            steps{
               sh 'java -jar target/dependency/webapp-runner.jar target/*.war'
-              }    
+              } 
+              }
      stage("Deploy War File"){
            steps{
               sh "cp target/*.war /etc/apache-tomcat-8.5.61/webapps/"
