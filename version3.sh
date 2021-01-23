@@ -46,6 +46,12 @@ do
       read -p "If above fields are correctly field and want to move next step then enter '1' or if you want to change then enter '0': " choce
       d=$choce
 done
+read -p "enter image id for nat instance: " ami 
+read -p "enter instance-type for nat instance: " micro
+read -p "enter image-id for public instance: " amin
+read -p "enter instance-type for public instance: " mic
+read -p "enter image-id for private instance: " pami
+read -p "enter instance type for private instance: " inst
 echo "CIDR and Availability Zone fields are successfully filled"
 vpcid=`aws ec2 create-vpc --cidr-block $cidr --query Vpc.VpcId --output text`        
 aws ec2 create-tags --resources $vpcid --tags Key=Name,Value=$value
@@ -69,24 +75,20 @@ aws ec2 create-key-pair --key-name $kname --query 'KeyMaterial' --output text > 
 chmod 400 $kname 
 echo "Key successfully created which will be used for Instances"
 groupid=`aws ec2 create-security-group --group-name $natn --description "Security group for Nat instance" --vpc-id $vpcid --query GroupId --output text` 
-read -p "enter image id for nat instance: " ami 
-read -p "enter instance-type for nat instance: " micro
 aws ec2 run-instances --image-id $ami --count 1 --instance-type $micro --key-name $kname --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value='$natname'}]' --security-group-ids $groupid --subnet-id $sub --associate-public-ip-address 
 natid=`aws ec2 describe-instances --filters Name=tag-value,Values=$natname --query Reservations[*].Instances[*].[InstanceId] --output text`                    
+aws ec2 modify-instance-attribute --instance-id $natid --no-source-dest-check
 echo "Nat Instance successfully created with id: " $natid
+sleep 15s
 rid=`aws ec2 create-route-table --vpc-id $vpcid --query RouteTable.RouteTableId --output text`               
 aws ec2 create-route --route-table-id $rid --destination-cidr-block 0.0.0.0/0 --instance-id $natid
 aws ec2 associate-route-table  --subnet-id $sut --route-table-id $rid
 echo "Route Table containing Nat Gateway successfully created and attached with Private subnet, Route id: " $rid
 pubgroup=`aws ec2 create-security-group --group-name $pubsg --description "Security group for public instance" --vpc-id $vpcid --query GroupId --output text`          
-read -p "enter image-id for public instance: " amin
-read -p "enter instance-type for public instance: " mic
 aws ec2 run-instances --image-id $amin --count 1 --instance-type $mic --key-name $kname --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value='$pubna'}]' --security-group-ids $pubgroup --subnet-id $sub --associate-public-ip-address 
 pubid=`aws ec2 describe-instances --filters Name=tag-value,Values=$pubna --query Reservations[*].Instances[*].[InstanceId] --output text`    
 echo "Public Instance successfull created with id: " $pubid
 pvtgroup=`aws ec2 create-security-group --group-name $pgn --description "Security group for private instance" --vpc-id $vpcid --query GroupId --output text`               
-read -p "enter image-id for private instance: " pami
-read -p "enter instance type for private instance: " inst
 aws ec2 run-instances --image-id $pami --count 1 --instance-type $inst --key-name $kname --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value='$pvtna'}]' --security-group-ids $pvtgroup --subnet-id $sut 
 pvtid=`aws ec2 describe-instances --filters Name=tag-value,Values=$pvtna --query Reservations[*].Instances[*].[InstanceId] --output text`                 
 pvtip=`aws ec2 describe-instances --filters Name=tag-value,Values=$pvtna --query Reservations[*].Instances[*].[PrivateIpAddress] --output text`
@@ -172,7 +174,6 @@ do
 done
 echo "Security Group rules are successfully filled for Nat Instance"
 pubip=`aws ec2 describe-instances --filters Name=tag-value,Values=$pubna --query Reservations[*].Instances[*].[PublicIpAddress] --output text`             
-aws ec2 modify-instance-attribute --instance-id $natid --no-source-dest-check
 echo "VPC, subnets, Instances and their security groups are successfully created"
 echo "Now we will work on insatlling Apache, creating Virtual Host and Html file in Public Instance"
 scp -i $kname $kname ec2-user@$pubip:/home/ec2-user/
