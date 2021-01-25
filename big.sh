@@ -25,7 +25,8 @@ do
       read -p "enter cidr value for vpc: " cidr
       read -p "enter cidr value for Public subnet: " subn
       read -p "enter cidr value for Private subnet: " subt
-      read -p "enter availability zone: " south
+      read -p "enter availability zone [ap-south-1a]: " south
+      south=${south:-ap-south-1a}
       echo "CIDR for VPC: " $cidr
       echo "CIDR for Public subnet: " $subn
       echo "CIDR for Private subnet: "$subt
@@ -37,12 +38,18 @@ echo `date +%T` "CIDR and Availability Zone fields are successfully filled" | te
 m=0
 while [ $m -eq 0 ]
 do
-	read -p "enter image id for nat instance: " ami 
-	read -p "enter instance-type for nat instance: " micro
-	read -p "enter image-id for public instance: " amin
-	read -p "enter instance-type for public instance: " mic
-	read -p "enter image-id for private instance: " pami
-	read -p "enter instance type for private instance: " inst
+	read -p "enter image id for nat instance [ami-00999044593c895de]: " ami
+	ami=${ami:-ami-00999044593c895de} 
+	read -p "enter instance-type for nat instance [t2.micro]: " micro
+	micro=${micro:-t2.micro}
+	read -p "enter image-id for public instance [ami-04b1ddd35fd71475a]: " amin
+	amin=${amin:-ami-04b1ddd35fd71475a}
+	read -p "enter instance-type for public instance [t2.micro]: " mic
+	mic=${mic:-t2.micro}
+	read -p "enter image-id for private instance [ami-04b1ddd35fd71475a]: " pami
+	pami=${pami:-ami-04b1ddd35fd71475a}
+	read -p "enter instance type for private instance [t2.micro]: " inst
+	inst=${inst:-t2.micro}
  	read -p "If above details filled correctly, enter '1' or if you want to change above details, enter '0': " chice
 	m=$chice
 done
