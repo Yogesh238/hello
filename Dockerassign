@@ -1,0 +1,4 @@
+FROM ubuntu
+EXPOSE 80
+RUN apt update && apt install nginx -y && echo "daemon off;" >> /etc/nginx/nginx.conf && echo "Hello World" > /var/www/html/index.nginx-debian.html
+ENTRYPOINT ["/usr/sbin/nginx"] 
