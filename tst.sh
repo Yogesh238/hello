@@ -200,24 +200,18 @@ sleep 20s
 scp -i $kname $kname ec2-user@$pubip:/home/ec2-user/
 ssh -i $kname ec2-user@$pubip sudo yum install httpd -y | tee -a $lname
 echo `date +%T` "HTTPD successfully installed" | tee -a $lname
-u=0
-while [ $u -eq 0 ]
-do
-      read -p 'Enter key name for SSL Certificate [keyyy]: ' name
-      name=${name:-keyyy}
-      read -p 'Enter key.org name (for SSL Certification purpose) [keyy]: ' orna
-      orna=${orna:-keyy}
-      read -p 'enter conf file name [virtual]: ' var
-      var=${var:-virtual}
-      read -p 'enter ServerName [yogesh.cloud.com]: ' servern
-      servern=${servern:-yogesh.cloud.com}
-      read -p 'enter server alias [www.yogesh.cloud.com]: ' server
-      server=${server:-www.yogesh.cloud.com}
-      read -p "enter html filename [file]: " html
-      html=${html:-file}
-      read -p "If you want to change above fields name then enter '0', otherwise enter '1'" oice
-      u=$oice
-done      
+read -p 'Enter key name for SSL Certificate [keyyy]: ' name
+name=${name:-keyyy}
+read -p 'Enter key.org name (for SSL Certification purpose) [keyy]: ' orna
+orna=${orna:-keyy}
+read -p 'enter conf file name [virtual]: ' var
+var=${var:-virtual}
+read -p 'enter ServerName [yogesh.cloud.com]: ' servern
+servern=${servern:-yogesh.cloud.com}
+read -p 'enter server alias [www.yogesh.cloud.com]: ' server
+server=${server:-www.yogesh.cloud.com}
+read -p "enter html filename [file]: " html
+html=${html:-file}
 ssh -i $kname ec2-user@$pubip sudo openssl genrsa -des3 -out $name.key 1024
 ssh -i $kname ec2-user@$pubip sudo openssl req -new -key $name.key -out $name.csr
 ssh -i $kname ec2-user@$pubip sudo cp $name.key $orna.key.org
