@@ -9,13 +9,13 @@ for r in response['Reservations']:
 		for x in i['Tags']:
 			for y in i['State']:
 				if y == "Name":
-	         		      print ("Name: " + x['Value']," Id: " + i['InstanceId']," Status: "+ i['State'][y])
+	         	    print ("Name: " + x['Value']," Id: " + i['InstanceId']," Status: "+ i['State'][y])
 print("    " )
 print("2) S3 resources: ")
 s3=boto3.client('s3')
 response=s3.list_buckets()
 for bucket in response['Buckets']:
-	 print(bucket['Name'])
+    print(bucket['Name'])
 print("    ")
 print("3) RDS resources: ")
 client=boto3.client('rds') 
