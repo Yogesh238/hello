@@ -27,7 +27,7 @@ pipeline {
               }
         stage('Build') {
             steps {
-                sh 'build'
+                sh 'junit build'
             }
         }
         stage('Test') {
