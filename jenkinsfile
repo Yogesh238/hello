@@ -27,12 +27,12 @@ pipeline {
               }
         stage('Build') {
             steps {
-                sh './gradlew build'
+                sh 'build'
             }
         }
         stage('Test') {
             steps {
-                sh './gradlew check'
+                sh 'check'
             } 
             }
      stage("Create War File"){
