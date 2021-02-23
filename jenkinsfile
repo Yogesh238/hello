@@ -4,6 +4,9 @@ pipeline {
          PATH= "/opt/apache-maven-3.6.3/bin/:$PATH"
          
          }
+     tools {
+         Junit 'Junit'
+         }
      stages {
         stage("Git checkout"){
            steps{
