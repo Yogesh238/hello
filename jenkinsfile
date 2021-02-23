@@ -7,7 +7,7 @@ pipeline {
      stages {
         stage("Git checkout"){
            steps{
-              git branch: 'main', credentialsId: 'e44652ce-bc38-4e73-861a-f9dc731c2a27', url: 'https://github.com/Yogesh238/jenk.git'
+              git branch: 'master', url: 'https://github.com/jenkins-docs/simple-java-maven-app.git'
               }
     }
      stage("Compile"){
