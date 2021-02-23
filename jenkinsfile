@@ -25,9 +25,6 @@ pipeline {
               sh "mvn install"
               }  
               }
-     {
-    agent any
-    stages {
         stage('Build') {
             steps {
                 sh './gradlew build'
@@ -36,15 +33,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh './gradlew check'
-            }
-        }
-    }
-        post {
-        always {
-            junit '/src/main/webapp/WEB-INF/*.xml'
-        }
-    }
-}   
+            } 
      stage("Create War File"){
            steps{
               sh 'jar -cf target/dependency/webapp-runner.jar target/*.war'
