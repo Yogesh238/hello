@@ -4,9 +4,6 @@ pipeline {
          PATH= "/opt/apache-maven-3.6.3/bin/:$PATH"
          
          }
-     tools {
-         Junit 'Junit'
-         }
      stages {
         stage("Git checkout"){
            steps{
@@ -28,16 +25,6 @@ pipeline {
               sh "mvn install"
               }  
               }
-        stage('Build') {
-            steps {
-                sh 'junit build'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'check'
-            } 
-            }
      stage("Create War File"){
            steps{
               sh 'jar -cf target/dependency/webapp-runner.jar target/*.war'
