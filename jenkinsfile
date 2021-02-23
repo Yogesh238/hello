@@ -26,12 +26,6 @@ pipeline {
               }  
               }
      {
-     agent any
-     environment {
-         PATH= "/home/ec2-user/:$PATH"
-         
-         }   
-     {
     agent any
     stages {
         stage('Build') {
