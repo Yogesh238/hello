@@ -2,6 +2,7 @@ pipeline {
      agent any
      environment {
          PATH= "/opt/apache-maven-3.6.3/bin/:$PATH"
+         
          }
      stages {
         stage("Git checkout"){
@@ -24,6 +25,32 @@ pipeline {
               sh "mvn install"
               }  
               }
+     {
+     agent any
+     environment {
+         PATH= "/home/ec2-user/:$PATH"
+         
+         }   
+     {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh './gradlew build'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh './gradlew check'
+            }
+        }
+    }
+        post {
+        always {
+            junit '/src/main/webapp/WEB-INF/*.xml'
+        }
+    }
+}   
      stage("Create War File"){
            steps{
               sh 'jar -cf target/dependency/webapp-runner.jar target/*.war'
