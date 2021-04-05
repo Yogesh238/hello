@@ -1,12 +1,8 @@
 pipeline {
-     agent any
-     environment {
-          PATH= "/opt/apache-maven-3.6.3/bin/:$PATH"
-     }
      stages {
-        stage("build"){
+        stage("install maven"){
            steps{
-              sh "mvn clean install"
+              sh "echo wget https://archive.apache.org/dist/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.tar.gz >> /home/ec2-user/code/Dockerfile"
               }
           }
       }
